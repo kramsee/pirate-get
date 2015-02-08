@@ -4,23 +4,35 @@ set -e
 TMP=$(mktemp pirate-get-XXXXXX)
 
 {
-	if [ $(which python2.7) ]
-	then
-		echo "#!/usr/bin/env python2.7" > "$TMP"
-	elif [ `which python2` ]
-	then
-		echo "#!/usr/bin/env python2" > "$TMP"
-	else
-		echo "#!/usr/bin/env python" > "$TMP"
-	fi
+  if [ $(which python2.7) ]
+  then
+    python='python2.7'
+  elif [ `which python2` ]
+  then
+    python='python2'
+  else
+    python='python'
+  fi
 
-	sed 1d $(dirname $0)/pirate-get.py >> "$TMP"
+  if [ $(which pip2.7) ]
+  then
+    pip='pip2.7'
+  elif [ `which pip2` ]
+  then
+    pip='pip2'
+  else
+    pip='pip'
+  fi
 
-	cp "$TMP" /usr/bin/pirate-get &&
-	chmod +x /usr/bin/pirate-get &&
-	chmod 755 /usr/bin/pirate-get &&
+  echo "#!/usr/bin/env $python" > "$TMP" &&
 
-	pip install -r requirements.txt &&
+  sed 1d $(dirname $0)/pirate-get.py >> "$TMP"
 
-	rm $TMP
+  cp "$TMP" /usr/bin/pirate-get &&
+  chmod +x /usr/bin/pirate-get &&
+  chmod 755 /usr/bin/pirate-get &&
+
+  $pip install -r requirements.txt &&
+
+  rm $TMP
 } || rm $TMP
