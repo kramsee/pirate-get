@@ -2,7 +2,7 @@
 
 pkgname=pirate-get
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='A command line interface for the Pirate Bay'
 arch=('any')
 url='https://github.com/vikstrous/pirate-get/'
